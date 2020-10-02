@@ -1,7 +1,7 @@
 package ru.appline.renesansFramework.pages;
 
 import io.qameta.allure.Step;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import ru.appline.renesansFramework.entity.FormParam;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * страница с формой вклада
@@ -180,31 +182,33 @@ public class DepositsPage extends BasePage {
                 return !param.equals(accruedPercent.getText());
             }
         });
-        Assert.assertEquals("Проверка поля 'Начислено %'", accruedPercent.getText(), value);
+        Assertions.assertEquals(accruedPercent.getText(), value, "Проверка поля 'Начисление %'");
         return this;
     }
 
     /**
      * проверка пополнений за весь срок
+     *
      * @param value - значение для проверки
      * @return
      */
     @Step("Проверка пополнений")
     public DepositsPage checkReplenishment(String value) {
-        Assert.assertEquals("Проверка поля 'пополнение за " + formParam.getTime() + " месяцев'",
-                replenishment.getText(), value);
+        assertEquals(replenishment.getText(), value, "Проверка поля 'пополнение за " + formParam.getTime()
+                + " месяцев'");
         return this;
     }
 
     /**
      * проверка итоговой суммы
+     *
      * @param value - значение для проверки
      * @return
      */
     @Step("Проверка итоговой суммы")
     public DepositsPage checkResult(String value) {
-        Assert.assertEquals("Проверка поляня 'К снятию через " + formParam.getTime() + " месяцев'",
-                result.getText(), value);
+        Assertions.assertEquals(result.getText(), value, "Проверка поляня 'К снятию через " + formParam.getTime()
+                + " месяцев'");
         return this;
     }
 

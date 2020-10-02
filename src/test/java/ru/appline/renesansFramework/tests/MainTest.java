@@ -2,61 +2,34 @@ package ru.appline.renesansFramework.tests;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
-@RunWith(Parameterized.class)
+
 public class MainTest extends Setup {
 
-    @Parameterized.Parameters
-    public static Collection data() {
-        return Arrays.asList(new Object[][]{
-                {"RUB", "300000", "6", "50000", "true", "8 704,31", "250 000", "558 704,31"},
-                {"USD", "500000", "9", "25000", "true", "668,53", "200 000", "700 668,53"}
-        });
-    }
-
-    @Parameterized.Parameter(0)
-    public String currency;
-
-    @Parameterized.Parameter(1)
-    public String depositSum;
-
-    @Parameterized.Parameter(2)
-    public String time;
-
-    @Parameterized.Parameter(3)
-    public String monthlyReplenishment;
-
-    @Parameterized.Parameter(4)
-    public String percent;
-
-    @Parameterized.Parameter(5)
-    public String accruedPercent;
-
-    @Parameterized.Parameter(6)
-    public String replenishment;
-
-    @Parameterized.Parameter(7)
-    public String result;
 
     @Epic("Тест для Ренесанс")
     @Feature(value = "Тест вклада")
-    @Test
-    public void scenario() {
+    @ParameterizedTest(name = "My test")
+    @ValueSource(strings = {"RUB_300000_6_50000_true_8 704,31_250 000_558 704,31",
+            "USD_500000_9_25000_true_668,53_200 000_700 668,53"})
+    public void scenario(String str) {
+        List<String> paramList = new ArrayList<>(Arrays.asList(str.split("_")));
         app.getStartPage()
                 .clickDeposits()
-                .insertForm(currency, depositSum, time, monthlyReplenishment, percent)
-                .checkAccruedPercent(accruedPercent)
-                .checkReplenishment(replenishment)
-                .checkResult(result);
+                .insertForm(paramList.get(0), paramList.get(1), paramList.get(2), paramList.get(3), paramList.get(4))
+                .checkAccruedPercent(paramList.get(5))
+                .checkReplenishment(paramList.get(6))
+                .checkResult(paramList.get(7));
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
